@@ -28,7 +28,7 @@ bool PersonInterface::selectOption(Person p) {
         {
             case(NEW):
             {
-                createNew();
+                //createNew();
                 break;
             }
             case(EDIT):

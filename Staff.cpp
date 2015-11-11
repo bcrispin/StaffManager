@@ -59,3 +59,11 @@ void Staff::setSalary(float s) {this->salary = s;}
 Staff::Staff(std::string name) : Person(name) {
 
 }
+
+void Staff::createNew() {
+    Person::createNew();
+    float salary;
+    std::cout << "Please enter a salary:: ";
+    std::cin >> salary;
+    Staff::setSalary(salary);
+}

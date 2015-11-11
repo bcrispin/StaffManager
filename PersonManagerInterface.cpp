@@ -3,7 +3,7 @@
 //
 #include<iostream>
 #include "PersonManagerInterface.h"
-#include "PersonInterface.h"
+#include "Staff.h"
 
 void PersonManagerInterface::addNew() {
     char choice;
@@ -11,13 +11,23 @@ void PersonManagerInterface::addNew() {
     std::cout << "1. (P)erson" << std::endl;
     std::cout << "2. (S)taff" << std::endl;
     std::cin >> choice;
-    switch (tolower(choice))
+    std::cin.ignore(INT_MAX, '\n');
+    Person person;
+    Staff staff;
+    switch (choice)
     {
         case 'p':
-            Person person = PersonInterface::createNew();
+            person.createNew();
+            personManager.add(person);
+            break;
+        case 's':
+            staff.createNew();
+            personManager.add(staff);
+            break;
+        default:
+            std::cout << "Invalid choice!\n\n\n";
     }
-    Person person = PersonInterface::createNew();
-    personManager.add(person);
+
 }
 
 void PersonManagerInterface::select(std::vector<int> listedVector)

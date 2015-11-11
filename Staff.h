@@ -21,6 +21,8 @@ private:
 public:
     virtual bool hasProperty(char i) override;
 
+    virtual void createNew() override;
+
     virtual void print() override;
 
     virtual void editProperty() override;
@@ -28,7 +30,7 @@ public:
     void setSalary(float);
     float getSalary();
 
-    Staff(std::string name);
+    Staff(std::string name = "");
 };
 
 
