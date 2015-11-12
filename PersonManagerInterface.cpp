@@ -96,10 +96,8 @@ void PersonManagerInterface::save() {
 }
 
 bool PersonManagerInterface::mainPrompt() {
-
+    std::cin.clear();
     char choice;
-    std::cin.ignore(INT_MAX, '\n');
-
     std::cout << "==================================" << std::endl;
     std::cout << "1. (A)dd Record" << std::endl;
     std::cout << "2. (L)ist Records" << std::endl;
@@ -109,6 +107,7 @@ bool PersonManagerInterface::mainPrompt() {
     std::cout << "==================================" << std::endl;
     std::cout << "\nSelect Your Choice :: ";
     std::cin >> choice;
+    std::cin.ignore(INT_MAX, '\n');
 
     switch(tolower(choice))
     {
@@ -134,30 +133,37 @@ bool PersonManagerInterface::mainPrompt() {
 }
 
 void PersonManagerInterface::list() {
-    char choice;
     char order;
+    std::string choices;
     std::cout << "==================================" << std::endl;
     std::cout << "Select a property to sort by: " << std::endl;
     std::cout << "1. (N)ame" << std::endl;
     std::cout << "2. (S)alary" << std::endl;
     std::cout << "3. (G)PA" << std::endl;
-    std::cout << "4. e(X)it" << std::endl;
+    std::cout << "4. (D)epartment" << std::endl;
+    std::cout << "5. e(X)it" << std::endl;
     std::cout << "==================================" << std::endl;
-    std::cout << "\nSelect Your Choice :: ";
-    std::cin >> choice;
-    std::cin.ignore();
-    std::cout << "==================================" << std::endl;
-    std::cout << "(A)scending or (D)escending order:: ";
-    std::cin >> order;
+    std::cout << "\nSelect Your Choices :: ";
+    std::cin >> choices;
     std::cin.ignore();
 
-    std::vector<int> sortedIndexVector = personManager.sortPersonVector(tolower(choice), (tolower(order)=='a'));
-    for (std::vector<int>::iterator it = sortedIndexVector.begin(); it != sortedIndexVector.end(); ++it)
+    if (choices!="x"||choices!="X")
     {
-        std::cout << std::distance(sortedIndexVector.begin(), it) << ".  ";
-        Person *p = personManager.getPersonByIndex(*it);
-        p->print();
-        std::cout << std::endl;
+        std::vector<char> properties(choices.begin(), choices.end());
+        std::cout << "==================================" << std::endl;
+        std::cout << "(A)scending or (D)escending order:: ";
+        std::cin >> order;
+        std::cin.ignore();
+
+        std::vector<int> sortedIndexVector = personManager.sortPersonVector(properties, (tolower(order)=='a'));
+        for (std::vector<int>::iterator it = sortedIndexVector.begin(); it != sortedIndexVector.end(); ++it)
+        {
+            std::cout << std::distance(sortedIndexVector.begin(), it) << ".  ";
+            Person *p = personManager.getPersonByIndex(*it);
+            p->print();
+            std::cout << std::endl;
+        }
+        select(sortedIndexVector);
     }
-    select(sortedIndexVector);
+
 }

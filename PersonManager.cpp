@@ -8,11 +8,27 @@
 #include "PersonManager.h"
 #include "model/Staff.h"
 
-std::vector<int> PersonManager::sortPersonVector(char property, bool ascending) {
+std::vector<int> PersonManager::sortPersonVector(std::vector<char> properties, bool ascending) {
 
-    std::vector<int> sortedVector = filter(property);
+    std::vector<int> sortedVector;
+    //Ensure only persons containing the selected properties are sorted.
+    sortedVector = filter(properties);
+
+    for (std::vector<int>::iterator it = sortedVector.begin(); it != sortedVector.end(); ++it)
+    {
+        std::vector<int>::iterator jt = it; //i:j :: it:jt
+        while (jt != sortedVector.begin() && compareTwoElements(getPersonByIndex(*(jt-1)),
+                                                                getPersonByIndex(*jt),
+                                                                properties,
+                                                                ascending)){
+            std::iter_swap(jt-1, jt);
+            --jt;
+        }
+    }
     return sortedVector;
 }
+
+
 
 std::vector<Person*> PersonManager::load(std::string filename) {
     std::vector<Person*> newVector;
@@ -26,7 +42,6 @@ std::vector<Person*> PersonManager::load(std::string filename) {
             if(type == Staff::getType())
                 person = new Staff();
                 if ((ifs >> *person))
-                    person->createNew();
                     newVector.push_back(person);
         }
     }
@@ -67,6 +82,7 @@ void PersonManager::add(Person *person)
 void PersonManager::remove(Person *p)
 {
     personVector.erase(search(p->getName()));
+    delete p;
 }
 
 std::vector<Person*>::iterator PersonManager::search(std::string query) {
@@ -80,12 +96,24 @@ std::vector<Person*>::iterator PersonManager::search(std::string query) {
     throw 1;
 }
 
-std::vector<int> PersonManager::filter(char property) {
+std::vector<int> PersonManager::filter(std::vector<char> properties) {
     std::vector<int> sortedIndexVector;
     for (std::vector<Person*>::iterator it = personVector.begin(); it != personVector.end(); ++it)
     {
-        if ((*it)->hasProperty(property))
+        bool hasAllProperties = true;
+        for (int i = 0; i < properties.size(); i++)
+        {
+            if (!(*it)->hasProperty(properties[i])){
+                hasAllProperties = false;
+                break;
+            }
+        }
+
+        if (hasAllProperties)
+        {
+            //Get the index of the iterator that has the above properties
             sortedIndexVector.push_back(it - personVector.begin());
+        }
     }
     return sortedIndexVector;
 }
@@ -93,4 +121,17 @@ std::vector<int> PersonManager::filter(char property) {
 Person* PersonManager::getPersonByIndex(int index)
 {
     return (Person*)personVector[index];
+}
+
+bool PersonManager::compareTwoElements(Person *p1, Person *p2, std::vector<char> properties, bool ascending) {
+
+    //if no more properties to sort by, return false
+    if (properties.empty())
+        return false;
+
+    //Compare two elements by the given property. If they are equal, call the next property in the properties vector
+    char property = properties.back();
+    properties.pop_back();
+    return (p1->propertyIsGreater(p2, property))
+           || (p1->propertyIsEqual(p2, property) && this->compareTwoElements(p1, p2, properties, ascending));
 }

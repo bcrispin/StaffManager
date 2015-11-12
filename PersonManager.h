@@ -12,16 +12,21 @@ class PersonManager
 {
     enum Property
     {
-        NAME = 'n'
+        NAME = 'n',
+        SALARY = 's',
+        DEPARTMENT = 'd'
+
     };
 private:
     std::vector<Person*> personVector;
     //Vector storing all persons
 
 public:
-    std::vector<int> sortPersonVector(char, bool ascending);
+    std::vector<int> sortPersonVector(std::vector<char>, bool ascending);
     //Sorts person vector by property, first to last. Default to NAME
     //PostCondition: Returns a sorted vector personVector, sorted by Property
+
+    bool compareTwoElements(Person *p1, Person *p2, std::vector<char> properties, bool ascending);
 
     std::vector<Person*> load(std::string filename = "default.dat");
     //loads the personVector from file, takes filename as argument. Defaults to "default.dat"
@@ -35,7 +40,7 @@ public:
     //Searches though personVector and gets an iterator.
     //PostCondition: Returns an iterator corresponding to the Person searched for.
 
-    std::vector<int> filter(char);
+    std::vector<int> filter(std::vector<char>);
 
     void add(Person *person);
     //Insert a new person. Opens up the PersonInterface new person prompt
