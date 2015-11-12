@@ -15,7 +15,7 @@ class PersonManager
         NAME = 'n'
     };
 private:
-    std::vector<Person> personVector;
+    std::vector<Person*> personVector;
     //Vector storing all persons
 
 public:
@@ -23,7 +23,7 @@ public:
     //Sorts person vector by property, first to last. Default to NAME
     //PostCondition: Returns a sorted vector personVector, sorted by Property
 
-    std::vector<Person> load(std::string filename = "default.dat");
+    std::vector<Person*> load(std::string filename = "default.dat");
     //loads the personVector from file, takes filename as argument. Defaults to "default.dat"
     //PostCondition: personVector is updated from file. Returns personVector
 
@@ -31,21 +31,21 @@ public:
     //Saves personVector to file. Defaults saving to "default.dat"
     //PostCondtion. personVector data is saved to file.
 
-    std::vector<Person>::iterator search(std::string query);
+    std::vector<Person*>::iterator search(std::string query);
     //Searches though personVector and gets an iterator.
     //PostCondition: Returns an iterator corresponding to the Person searched for.
 
     std::vector<int> filter(char);
 
-    void add(Person person);
+    void add(Person *person);
     //Insert a new person. Opens up the PersonInterface new person prompt
     //PostCondition: Adds a new person to personVector
 
-    void remove(Person p);
+    void remove(Person* p);
     //Remove the person located at the reference passed in
     //PostCondition: per
 
-    Person& getPersonByIndex(int index);
+    Person* getPersonByIndex(int index);
     //Calls ->edit for the person at the given index
     //PostCondition:
 

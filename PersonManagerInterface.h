@@ -21,7 +21,7 @@ public:
     void select(std::vector<int> listedVector);
     void editSelected();
     void remove();
-    Person & search();
+    Person * search();
 
     PersonManagerInterface(PersonManager &);
 };

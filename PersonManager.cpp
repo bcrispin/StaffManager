@@ -6,6 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include "PersonManager.h"
+#include "Staff.h"
 
 std::vector<int> PersonManager::sortPersonVector(char property, bool ascending) {
 
@@ -13,21 +14,20 @@ std::vector<int> PersonManager::sortPersonVector(char property, bool ascending) 
     return sortedVector;
 }
 
-std::vector<Person> PersonManager::load(std::string filename) {
-    std::vector<Person> newVector;
+std::vector<Person*> PersonManager::load(std::string filename) {
+    std::vector<Person*> newVector;
     std::ifstream ifs(filename);
-
+    Person * person;
     while(!ifs.eof())
     {
-        Person person;
         std::string type;
         if (ifs >> type)
         {
-            if (type == Person::getType())
-            {
-                if ((ifs >> person))
+            if(type == Staff::getType())
+                person = new Staff();
+                if ((ifs >> *person))
+                    person->createNew();
                     newVector.push_back(person);
-            }
         }
     }
 
@@ -38,21 +38,21 @@ std::vector<Person> PersonManager::load(std::string filename) {
 void PersonManager::save(std::string filename)
 {
     std::ofstream ofs(filename);
-    for (std::vector<Person>::iterator it = personVector.begin(); it != personVector.end(); ++it)
+    for (std::vector<Person*>::iterator it = personVector.begin(); it != personVector.end(); ++it)
     {
-        ofs << *it;
+        ofs << *(*it);
     }
 
     ofs.close();
 }
 
-void PersonManager::add(Person person)
+void PersonManager::add(Person *person)
 {
     bool hasAddedPerson = false;
     //Iterate over PersonVector and insert the new Person in order by name.
-    for (std::vector<Person>::iterator it = personVector.begin(); it != personVector.end(); ++it)
+    for (std::vector<Person*>::iterator it = personVector.begin(); it != personVector.end(); ++it)
     {
-        if (person >= *it)
+        if (*person >= *(*it))
         {
             personVector.insert(it, person);
             hasAddedPerson = true;
@@ -64,15 +64,15 @@ void PersonManager::add(Person person)
         personVector.push_back(person);
 }
 
-void PersonManager::remove(Person p)
+void PersonManager::remove(Person *p)
 {
-    personVector.erase(search(p.getName()));
+    personVector.erase(search(p->getName()));
 }
 
-std::vector<Person>::iterator PersonManager::search(std::string query) {
-    for (std::vector<Person>::iterator it = personVector.begin(); it != personVector.end(); ++it)
+std::vector<Person*>::iterator PersonManager::search(std::string query) {
+    for (std::vector<Person*>::iterator it = personVector.begin(); it != personVector.end(); ++it)
     {
-        if (it->getName() == query)
+        if ((*it)->getName() == query)
         {
             return it;
         }
@@ -82,15 +82,15 @@ std::vector<Person>::iterator PersonManager::search(std::string query) {
 
 std::vector<int> PersonManager::filter(char property) {
     std::vector<int> sortedIndexVector;
-    for (std::vector<Person>::iterator it = personVector.begin(); it != personVector.end(); ++it)
+    for (std::vector<Person*>::iterator it = personVector.begin(); it != personVector.end(); ++it)
     {
-        if (it->hasProperty(property))
+        if ((*it)->hasProperty(property))
             sortedIndexVector.push_back(it - personVector.begin());
     }
     return sortedIndexVector;
 }
 
-Person& PersonManager::getPersonByIndex(int index)
+Person* PersonManager::getPersonByIndex(int index)
 {
-    return personVector[index];
+    return (Person*)personVector[index];
 }

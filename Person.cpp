@@ -36,19 +36,18 @@ void Person::setName(std::string n) {
 }
 
 std::ostream &operator<<(std::ostream &os, const Person &p) {
-    os << p.getType() << ' ' << p.name << '\n';
+    p.output(os);
     return os;
 }
 
 std::istream &operator>>(std::istream &is, Person &p) {
-    is >> p.name;
+    p.input(is);
     return is;
 }
 
 std::string Person::getType(){
     return "PERSON";
 }
-
 bool Person::hasProperty(char i) {
     switch (i)
     {
@@ -89,7 +88,7 @@ void Person::editProperty() {
 
 void Person::createNew() {
     std::string name;
-    std::cout << "Please enter a name: " << std::__1::endl;
+    std::cout << "Please enter a name: " << std::endl;
     getline(std::cin, name);
-    Person::setName(name);
+    this->name = name;
 }

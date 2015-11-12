@@ -18,7 +18,6 @@ class Person
     friend std::istream& operator>>(std::istream&, Person&);
 
 
-
 public:
     enum property
     {
@@ -26,16 +25,20 @@ public:
     };
 
     static std::string getType();
+
     std::string getName() const;
     void setName(std::string name);
 
-    virtual bool hasProperty(char);
+    virtual void output(std::ostream& os) const = 0;
+    virtual void input(std::istream& is) = 0;
 
-    virtual void print();
+    virtual bool hasProperty(char)=0;
 
-    virtual void editProperty();
+    virtual void print()=0;
 
-    virtual void createNew();
+    virtual void editProperty()=0;
+
+    virtual void createNew()=0;
     //Create new person. Prompt user to input new user data.
     //PostCondition: Return a new Person with input data.
 

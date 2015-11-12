@@ -5,6 +5,7 @@
 #include <iostream>
 #include "Staff.h"
 
+
 bool Staff::hasProperty(char i) {
     switch (i)
     {
@@ -53,7 +54,7 @@ void Staff::editProperty() {
     }
 }
 
-float Staff::getSalary() { return this->salary;}
+float Staff::getSalary() const { return this->salary;}
 void Staff::setSalary(float s) {this->salary = s;}
 
 Staff::Staff(std::string name) : Person(name) {
@@ -65,5 +66,19 @@ void Staff::createNew() {
     float salary;
     std::cout << "Please enter a salary:: ";
     std::cin >> salary;
-    Staff::setSalary(salary);
+    this->salary = salary;
+}
+
+void Staff::output(std::ostream &os) const {
+    os << getType() << ' ' << getName() << ' ' << getSalary() << '\n';
+}
+
+void Staff::input(std::istream &is) {
+    std::string n;
+    is >> n >> salary;
+    setName(n);
+}
+
+std::string Staff::getType() const{
+    return "STAFF";
 }

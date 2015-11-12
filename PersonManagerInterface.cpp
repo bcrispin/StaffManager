@@ -12,17 +12,15 @@ void PersonManagerInterface::addNew() {
     std::cout << "2. (S)taff" << std::endl;
     std::cin >> choice;
     std::cin.ignore(INT_MAX, '\n');
-    Person person;
-    Staff staff;
+    Person * person;
     switch (choice)
     {
-        case 'p':
-            person.createNew();
-            personManager.add(person);
+        case 'p':;
             break;
         case 's':
-            staff.createNew();
-            personManager.add(staff);
+            person = new Staff();
+            person->createNew();
+            personManager.add(person);
             break;
         default:
             std::cout << "Invalid choice!\n\n\n";
@@ -41,7 +39,7 @@ void PersonManagerInterface::select(std::vector<int> listedVector)
     {
         std::cout << "\n\nSelect the index of the person you wish to edit:: ";
         std::cin >> index;
-        personManager.getPersonByIndex(listedVector[index]).editProperty();
+        personManager.getPersonByIndex(listedVector[index])->editProperty();
         std::cout << "\n\n\n";
     }
 
@@ -53,10 +51,10 @@ void PersonManagerInterface::editSelected()
 }
 
 void PersonManagerInterface::remove() {
-    Person p = search();
+    Person *p = search();
     char response;
-    std::cout << "Remove entry for " << p.getName()
-            << " in group: " << p.getType() << "? (y/n)::";
+    std::cout << "Remove entry for " << p->getName()
+            << " in group: " << p->getType() << "? (y/n)::";
 
     std::cin >> response;
     std::cin.ignore();
@@ -64,23 +62,23 @@ void PersonManagerInterface::remove() {
     {
         case 'y':
             personManager.remove(p);
-            std::cout << p.getName() << " removed!\n\n\n";
+            std::cout << p->getName() << " removed!\n\n\n";
             break;
         case 'n':
-            std::cout << p.getName() << " was not removed!\n\n\n";
+            std::cout << p->getName() << " was not removed!\n\n\n";
             break;
         default:
             std::cout << "Invalid response. Returning to main menu.\n\n\n";
     }
 }
 
-Person & PersonManagerInterface::search() {
+Person * PersonManagerInterface::search() {
 
     try {
         std::string n;
         std::cout << "Enter a name to search for: ";
         getline(std::cin, n);
-        return *personManager.search(n);
+        return (*personManager.search(n));
     }
     catch (int i)
     {
@@ -100,6 +98,8 @@ void PersonManagerInterface::save() {
 bool PersonManagerInterface::mainPrompt() {
 
     char choice;
+    std::cin.ignore(INT_MAX, '\n');
+
     std::cout << "==================================" << std::endl;
     std::cout << "1. (A)dd Record" << std::endl;
     std::cout << "2. (L)ist Records" << std::endl;
@@ -110,7 +110,6 @@ bool PersonManagerInterface::mainPrompt() {
     std::cout << "\nSelect Your Choice :: ";
     std::cin >> choice;
 
-    std::cin.ignore(INT_MAX, '\n');
     switch(tolower(choice))
     {
         case 'a':
@@ -156,8 +155,8 @@ void PersonManagerInterface::list() {
     for (std::vector<int>::iterator it = sortedIndexVector.begin(); it != sortedIndexVector.end(); ++it)
     {
         std::cout << std::distance(sortedIndexVector.begin(), it) << ".  ";
-        Person p = personManager.getPersonByIndex(*it);
-        p.print();
+        Person *p = personManager.getPersonByIndex(*it);
+        p->print();
         std::cout << std::endl;
     }
     select(sortedIndexVector);

@@ -15,6 +15,12 @@ class Staff : public Person
         NAME = 'n',
         SALARY = 's'
     };
+
+public:
+    virtual void output(std::ostream &os) const override;
+
+    virtual void input(std::istream &is) override;
+
 private:
     float salary;
 
@@ -28,7 +34,7 @@ public:
     virtual void editProperty() override;
 
     void setSalary(float);
-    float getSalary();
+    float getSalary() const;
 
     Staff(std::string name = "");
 };
