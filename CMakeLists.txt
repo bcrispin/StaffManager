@@ -3,5 +3,5 @@ project(StaffManager)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 
-set(SOURCE_FILES main.cpp Person.cpp Person.h PersonInterface.cpp PersonInterface.h PersonManager.cpp PersonManager.h PersonManagerInterface.cpp PersonManagerInterface.h Staff.cpp Staff.h StaffInterface.cpp StaffInterface.h)
+set(SOURCE_FILES main.cpp model/Person.cpp model/Person.h PersonManager.cpp PersonManager.h PersonManagerInterface.cpp PersonManagerInterface.h model/Staff.cpp model/Staff.h)
 add_executable(StaffManager ${SOURCE_FILES})

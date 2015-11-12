@@ -1,6 +1,4 @@
 #include <iostream>
-#include "Person.h"
-#include "PersonInterface.h"
 #include "PersonManager.h"
 #include "PersonManagerInterface.h"
 

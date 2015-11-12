@@ -6,6 +6,7 @@
 #define STAFFMANAGER_STAFF_H
 
 
+#include <vector>
 #include "Person.h"
 
 class Staff : public Person
@@ -25,6 +26,10 @@ private:
     float salary;
 
 public:
+    virtual bool propertyIsGreater(Person *p2, char property) override;
+
+    virtual bool propertyIsEqual(Person *p2, char property) override;
+
     virtual bool hasProperty(char i) override;
 
     virtual void createNew() override;
@@ -33,9 +38,11 @@ public:
 
     virtual void editProperty() override;
 
+    ~Staff();
+
     void setSalary(float);
     float getSalary() const;
-
+    static std::string getType();
     Staff(std::string name = "");
 };
 

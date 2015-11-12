@@ -2,7 +2,6 @@
 // Created by Brennan Crispin on 11/8/15.
 //
 
-#include "PersonInterface.h"
 #include <iostream>
 #include "Person.h"
 
@@ -91,4 +90,8 @@ void Person::createNew() {
     std::cout << "Please enter a name: " << std::endl;
     getline(std::cin, name);
     this->name = name;
+}
+
+Person::~Person(){
+
 }

@@ -6,7 +6,7 @@
 #define STAFFMANAGER_PERSONMANAGER_H
 
 #include <vector>
-#include "Person.h"
+#include "model/Person.h"
 
 class PersonManager
 {

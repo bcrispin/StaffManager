@@ -3,6 +3,7 @@
 //
 
 #include <iostream>
+#include <vector>
 #include "Staff.h"
 
 
@@ -19,8 +20,7 @@ bool Staff::hasProperty(char i) {
 }
 
 void Staff::print() {
-    Person::print();
-    std::cout << "   Salary: " << getSalary();
+    std::cout << "Type: " << getType() << "   Name: " << getName() << "   Salary: " << getSalary();
 }
 
 void Staff::editProperty() {
@@ -28,7 +28,7 @@ void Staff::editProperty() {
     std::cout << "-----Properties-----" << std::endl;
     std::cout << "'n' -- name " << std::endl;
     std::cout << "'s' -- salary " << std::endl;
-    std::cout << "Please select a property: ";
+    std::cout << "Please select a property to edit: ";
     std::cin >> propertyToEdit;
     switch (propertyToEdit)
     {
@@ -79,6 +79,37 @@ void Staff::input(std::istream &is) {
     setName(n);
 }
 
-std::string Staff::getType() const{
+std::string Staff::getType(){
     return "STAFF";
+}
+
+bool Staff::propertyIsGreater(Person *p2, char property) {
+    Staff * s2 = static_cast<Staff*>(p2);
+    switch (property)
+    {
+        case NAME:
+            return (this->getName() > s2->getName());
+        case SALARY:
+            return (this->getSalary() > s2->getSalary());
+        default:
+            return false;
+    }
+}
+
+bool Staff::propertyIsEqual(Person *p2, char property) {
+    Staff * s2 = static_cast<Staff*>(p2);
+    switch (property)
+    {
+        case NAME:
+            return (this->getName() == s2->getName());
+        case SALARY:
+            return (this->getSalary() == s2->getSalary());
+        default:
+            return false;
+    }
+}
+
+Staff::~Staff() {
+    setName("");
+    setSalary(0);
 }

@@ -3,7 +3,7 @@
 //
 #include<iostream>
 #include "PersonManagerInterface.h"
-#include "Staff.h"
+#include "model/Staff.h"
 
 void PersonManagerInterface::addNew() {
     char choice;

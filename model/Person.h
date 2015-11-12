@@ -6,6 +6,7 @@
 #define STAFFMANAGER_PERSON_H
 
 #include<string>
+#include <vector>
 
 class Person
 {
@@ -31,9 +32,9 @@ public:
 
     virtual void output(std::ostream& os) const = 0;
     virtual void input(std::istream& is) = 0;
-
     virtual bool hasProperty(char)=0;
-
+    virtual bool propertyIsGreater(Person *p2, char property) = 0;
+    virtual bool propertyIsEqual(Person *p2, char property) = 0;
     virtual void print()=0;
 
     virtual void editProperty()=0;
@@ -43,6 +44,8 @@ public:
     //PostCondition: Return a new Person with input data.
 
     Person(std::string name = "");
+    virtual ~Person()=0;
+
 
 private:
     std::string name;

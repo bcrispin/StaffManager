@@ -6,7 +6,7 @@
 #include <sstream>
 #include <iostream>
 #include "PersonManager.h"
-#include "Staff.h"
+#include "model/Staff.h"
 
 std::vector<int> PersonManager::sortPersonVector(char property, bool ascending) {
 
