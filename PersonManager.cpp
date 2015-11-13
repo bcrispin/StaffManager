@@ -7,6 +7,7 @@
 #include <iostream>
 #include "PersonManager.h"
 #include "model/Staff.h"
+#include "model/Faculty.h"
 
 std::vector<int> PersonManager::sortPersonVector(std::vector<char> properties, bool ascending) {
 
@@ -25,6 +26,9 @@ std::vector<int> PersonManager::sortPersonVector(std::vector<char> properties, b
             --jt;
         }
     }
+    if (!ascending)
+        std::reverse(sortedVector.begin(), sortedVector.end());
+
     return sortedVector;
 }
 
@@ -39,10 +43,16 @@ std::vector<Person*> PersonManager::load(std::string filename) {
         std::string type;
         if (ifs >> type)
         {
-            if(type == Staff::getType())
+            if(type == Staff::getType()) {
                 person = new Staff();
                 if ((ifs >> *person))
                     newVector.push_back(person);
+            }
+            else if(type == Faculty::getType()){
+                person = new Faculty();
+                if ((ifs >> *person))
+                    newVector.push_back(person);
+            }
         }
     }
 
@@ -130,8 +140,8 @@ bool PersonManager::compareTwoElements(Person *p1, Person *p2, std::vector<char>
         return false;
 
     //Compare two elements by the given property. If they are equal, call the next property in the properties vector
-    char property = properties.back();
-    properties.pop_back();
+    char property = properties.front();
+    properties.erase(properties.begin());
     return (p1->propertyIsGreater(p2, property))
            || (p1->propertyIsEqual(p2, property) && this->compareTwoElements(p1, p2, properties, ascending));
 }

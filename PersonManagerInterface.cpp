@@ -4,21 +4,25 @@
 #include<iostream>
 #include "PersonManagerInterface.h"
 #include "model/Staff.h"
+#include "model/Faculty.h"
 
 void PersonManagerInterface::addNew() {
     char choice;
     std::cout << "Select type of person to create: " << std::endl;
-    std::cout << "1. (P)erson" << std::endl;
-    std::cout << "2. (S)taff" << std::endl;
+    std::cout << "1. (S)taff" << std::endl;
+    std::cout << "2. (F)aculty" <<std::endl;
     std::cin >> choice;
     std::cin.ignore(INT_MAX, '\n');
     Person * person;
     switch (choice)
     {
-        case 'p':;
-            break;
         case 's':
             person = new Staff();
+            person->createNew();
+            personManager.add(person);
+            break;
+        case 'f':
+            person = new Faculty();
             person->createNew();
             personManager.add(person);
             break;
@@ -147,7 +151,7 @@ void PersonManagerInterface::list() {
     std::cin >> choices;
     std::cin.ignore();
 
-    if (choices!="x"||choices!="X")
+    if (choices!="x"&&choices!="X")
     {
         std::vector<char> properties(choices.begin(), choices.end());
         std::cout << "==================================" << std::endl;

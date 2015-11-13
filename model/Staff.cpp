@@ -4,14 +4,15 @@
 
 #include <iostream>
 #include <vector>
+#include <sstream>
 #include "Staff.h"
 
 
 bool Staff::hasProperty(char i) {
+    if (Person::hasProperty(i))
+        return true;
     switch (i)
     {
-        case NAME:
-            return true;
         case SALARY:
             return true;
         default:
@@ -20,33 +21,78 @@ bool Staff::hasProperty(char i) {
 }
 
 void Staff::print() {
-    std::cout << "Type: " << getType() << "   Name: " << getName() << "   Salary: " << getSalary();
+    Person::print();
+    std::cout << "   Salary: " << getSalary();
 }
 
 void Staff::editProperty() {
     char propertyToEdit;
     std::cout << "-----Properties-----" << std::endl;
-    std::cout << "'n' -- name " << std::endl;
-    std::cout << "'s' -- salary " << std::endl;
-    std::cout << "Please select a property to edit: ";
+    std::cout << "1. (N)ame" << std::endl;
+    std::cout << "2. (I)d" << std::endl;
+    std::cout << "3. (A)ddress" << std::endl;
+    std::cout << "4. (P)hone" << std::endl;
+    std::cout << "5. (G)ender" << std::endl;
+    std::cout << "6. (E)mail" << std::endl;
+    std::cout << "7. (S)alary" <<std::endl;
+    std::cout << "7. e(X)it" << std:: endl;
+    std::cout << "Please select a property: ";
     std::cin >> propertyToEdit;
-    switch (propertyToEdit)
-    {
-        case(Staff::NAME):
-        {
-            std::string n;
+    switch (propertyToEdit) {
+        case (Person::NAME): {
+            std::string name;
             std::cout << "Please enter a new name: ";
-            std::cin >> n;
-            Person::setName(n);
+            std::cin >> name;
+            Person::setName(name);
             break;
         }
-        case(Staff::SALARY):
-        {
-            float s;
-            std::cout << "Please enter a new salary: ";
-            std::cin >> s;
-            Staff::setSalary(s);
+        case ID:{
+            float id;
+            std::cout << "Please enter a new ID: ";
+            std::cin >> id;
+            Person::setId(id);
+            break;
         }
+        case ADDRESS: {
+            std::string address;
+            std::cout << "Please enter a new address: ";
+            std::cin >> address;
+            Person::setAddress(address);
+            break;
+        }
+        case PHONE: {
+            std::string phone;
+            std::cout << "Please enter a new phone: ";
+            std::cin >> phone;
+            Person::setPhone(phone);
+            break;
+        }
+        case GENDER:
+        {   char gender;
+            std::cout << "Please enter a new gender (m/f): ";
+            std::cin >> gender;
+            Person::setGender(gender);
+            break;}
+        case EMAIL:
+        {std::string email;
+            std::cout << "Please enter a new email: ";
+            std::cin >> email;
+            Person::setEmail(email);
+            break;}
+        case SALARY: {
+            std::string input;
+            while (true) {
+                std::cout << "Please enter a new salary: ";
+                getline(std::cin, input);
+
+                std::stringstream stream(input);
+                if (stream >> salary)
+                    break;
+                std::cout << "Invalid number, please try again" << std::endl;
+            }
+        }
+        case 'x':
+            break;
         default:
         {
             std::cout << "Invalid selection. Returning to options menu" << std::endl;
@@ -70,13 +116,14 @@ void Staff::createNew() {
 }
 
 void Staff::output(std::ostream &os) const {
-    os << getType() << ' ' << getName() << ' ' << getSalary() << '\n';
+    Person::output(os);
+    os << ' ' << getSalary();
 }
 
 void Staff::input(std::istream &is) {
-    std::string n;
-    is >> n >> salary;
-    setName(n);
+    Person::input(is);
+    is >> salary;
+
 }
 
 std::string Staff::getType(){
@@ -84,28 +131,32 @@ std::string Staff::getType(){
 }
 
 bool Staff::propertyIsGreater(Person *p2, char property) {
-    Staff * s2 = static_cast<Staff*>(p2);
-    switch (property)
+    if (Person::propertyIsGreater(p2, property))
+        return true;
+    else
     {
-        case NAME:
-            return (this->getName() > s2->getName());
-        case SALARY:
-            return (this->getSalary() > s2->getSalary());
-        default:
-            return false;
+        Staff * s2 = static_cast<Staff*>(p2);
+        switch (property)
+        {
+            case SALARY:
+                return (this->getSalary() > s2->getSalary());
+            default:
+                return false;
+        }
     }
 }
 
 bool Staff::propertyIsEqual(Person *p2, char property) {
-    Staff * s2 = static_cast<Staff*>(p2);
-    switch (property)
-    {
-        case NAME:
-            return (this->getName() == s2->getName());
-        case SALARY:
-            return (this->getSalary() == s2->getSalary());
-        default:
-            return false;
+    if (Person::propertyIsEqual(p2, property))
+        return true;
+    else {
+        Staff *s2 = static_cast<Staff *>(p2);
+        switch (property) {
+            case SALARY:
+                return (this->getSalary() == s2->getSalary());
+            default:
+                return false;
+        }
     }
 }
 

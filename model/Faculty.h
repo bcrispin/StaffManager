@@ -1,36 +1,34 @@
 //
-// Created by Brennan Crispin on 11/11/15.
+// Created by Brennan Crispin on 11/12/15.
 //
 
-#ifndef STAFFMANAGER_STAFF_H
-#define STAFFMANAGER_STAFF_H
+#ifndef STAFFMANAGER_FACULTY_H
+#define STAFFMANAGER_FACULTY_H
 
 
-#include <vector>
-#include "Person.h"
+#include "Staff.h"
 
-class Staff : public Person
-{
+class Faculty : public Staff{
+
     enum property
     {
         NAME = 'n',
-        ID = 'i',
-        PHONE = 'p',
-        ADDRESS = 'a',
-        GENDER = 'g',
-        EMAIL = 'e',
-        SALARY = 's'
+        SALARY = 's',
+        DEPARTMENT = 'd'
     };
 
+private:
+    std::string department;
+
 public:
+    std::string getDepartment() const;
+
+    void setDepartment(std::string department);
+
     virtual void output(std::ostream &os) const override;
 
     virtual void input(std::istream &is) override;
 
-private:
-    float salary;
-
-public:
     virtual bool propertyIsGreater(Person *p2, char property) override;
 
     virtual bool propertyIsEqual(Person *p2, char property) override;
@@ -43,13 +41,8 @@ public:
 
     virtual void editProperty() override;
 
-    ~Staff();
-
-    void setSalary(float);
-    float getSalary() const;
     static std::string getType();
-    Staff(std::string name = "");
 };
 
 
-#endif //STAFFMANAGER_STAFF_H
+#endif //STAFFMANAGER_FACULTY_H
